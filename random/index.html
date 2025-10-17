@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al Beuniy Politics Club - Engage. Debate. Lead.</title>
+    <meta name="description"
+        content="Join our school Politics Club to engage in meaningful political discourse and shape the future.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3730a3',
+                        secondary: '#60a5fa',
+                        accent: '#2563eb',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #3730a3;
+        }
+
+        .nav-link.active {
+            color: #3730a3;
+            font-weight: 600;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #3730a3 0%, #60a5fa 50%, #2563eb 100%);
+        }
+
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        #mobile-menu.open {
+            max-height: 500px;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" onclick="showPage('home')" class="text-xl font-bold text-primary">
+                    Politics Club
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" onclick="showPage('home')" class="nav-link" data-page="home">Home</a>
+                    <a href="#" onclick="showPage('about')" class="nav-link" data-page="about">About</a>
+                    <a href="#" onclick="showPage('events')" class="nav-link" data-page="events">Events</a>
+                    <a href="#" onclick="showPage('members')" class="nav-link" data-page="members">Members</a>
+                    <a href="#" onclick="showPage('contact')" class="nav-link" data-page="contact">Contact</a>
+                    <a href="#" onclick="showPage('blog')"
+                        class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">Blog</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden">
+                <div class="py-4 space-y-2">
+                    <a href="#" onclick="showPage('home')" class="block py-2 text-gray-600 hover:text-primary">Home</a>
+                    <a href="#" onclick="showPage('about')"
+                        class="block py-2 text-gray-600 hover:text-primary">About</a>
+                    <a href="#" onclick="showPage('events')"
+                        class="block py-2 text-gray-600 hover:text-primary">Events</a>
+                    <a href="#" onclick="showPage('members')"
+                        class="block py-2 text-gray-600 hover:text-primary">Members</a>
+                    <a href="#" onclick="showPage('contact')"
+                        class="block py-2 text-gray-600 hover:text-primary">Contact</a>
+                    <a href="#" onclick="showPage('blog')"
+                        class="block py-2 px-4 mt-2 bg-primary text-white rounded-md">Blog</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- HOME PAGE -->
+    <div id="home-page" class="page-content active">
+        <!-- Hero Section -->
+        <section class="gradient-bg text-white py-20 md:py-32">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <div class="text-sm font-semibold mb-3 opacity-80 tracking-wide uppercase">
+                        Al Beuniy School
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">Engage. Debate. Lead.</h1>
+                    <p class="text-lg md:text-xl mb-8 opacity-90">
+                        Join our community of politically engaged students who are passionate about understanding
+                        current events,
+                        debating important issues, and making a difference in our world.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="showPage('contact')"
+                            class="px-6 py-3 bg-white text-primary rounded-md font-semibold hover:bg-opacity-90">
+                            Join the Club →
+                        </button>
+                        <button onclick="showPage('about')"
+                            class="px-6 py-3 bg-transparent border-2 border-white text-white rounded-md font-semibold hover:bg-white hover:text-primary">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Do Section -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">What We Do</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        We create opportunities for students to explore political ideas and engage with the democratic
+                        process.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">💬</div>
+                        <h3 class="text-xl font-bold mb-2">Weekly Debates</h3>
+                        <p class="text-gray-600">
+                            Engage in structured debates on current political issues and develop your argumentation
+                            skills.
+                        </p>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">👥</div>
+                        <h3 class="text-xl font-bold mb-2">Guest Speakers</h3>
+                        <p class="text-gray-600">
+                            Meet local politicians, activists, and policy experts who share their experiences and
+                            insights.
+                        </p>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">📅</div>
+                        <h3 class="text-xl font-bold mb-2">Campaign Events</h3>
+                        <p class="text-gray-600">
+                            Participate in voter registration drives, campaign volunteering, and civic engagement
+                            initiatives.
+                        </p>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">📚</div>
+                        <h3 class="text-xl font-bold mb-2">Research Projects</h3>
+                        <p class="text-gray-600">
+                            Collaborate on policy research and analysis projects that explore real-world political
+                            challenges.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-16 md:py-24 bg-primary text-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Make Your Voice Heard?</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto opacity-90">
+                    Join a community of students who are passionate about politics and committed to making a difference.
+                </p>
+                <button onclick="showPage('contact')"
+                    class="px-6 py-3 bg-white text-primary rounded-md font-semibold hover:bg-opacity-90">
+                    Get Involved Today →
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="about-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">About Politics Club</h1>
+                    <p class="text-lg text-gray-600">
+                        Founded in 2025, our Politics Club has become a vibrant community where students explore
+                        political ideas,
+                        engage in meaningful debate, and develop the skills needed to become informed citizens and
+                        future leaders.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission & Vision -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <div class="p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="text-primary mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
+                        <p class="text-gray-600">
+                            To foster a community of politically engaged students who think critically about current
+                            events,
+                            understand diverse perspectives, and actively participate in the democratic process. We
+                            strive to
+                            create an inclusive environment where all viewpoints are respected and rigorous debate is
+                            encouraged.
+                        </p>
+                    </div>
+
+                    <div class="p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="text-primary mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Our Vision</h3>
+                        <p class="text-gray-600">
+                            We envision a generation of informed, engaged citizens who understand the complexities of
+                            political
+                            systems and are equipped to address the challenges facing our society. Through education,
+                            dialogue,
+                            and action, we aim to inspire positive change in our school and broader community.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- What We Believe -->
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-8 text-center">What We Believe</h2>
+                    <div class="space-y-6">
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-xl font-bold mb-2">Respectful Discourse</h4>
+                            <p class="text-gray-600">
+                                We believe that productive political dialogue requires respect, empathy, and a
+                                willingness to
+                                listen. Our club is a safe space where students can express their views without fear of
+                                judgment.
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-xl font-bold mb-2">Critical Thinking</h4>
+                            <p class="text-gray-600">
+                                We encourage members to question assumptions, analyze evidence, and develop
+                                well-reasoned arguments.
+                                Critical thinking is essential for understanding complex political issues.
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-xl font-bold mb-2">Civic Engagement</h4>
+                            <p class="text-gray-600">
+                                We believe that democracy requires active participation. Through voter registration
+                                drives,
+                                community service, and advocacy, we put our values into action.
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-xl font-bold mb-2">Diverse Perspectives</h4>
+                            <p class="text-gray-600">
+                                We celebrate the diversity of political thought and welcome students from all
+                                backgrounds and
+                                ideological perspectives. Our strength lies in our differences.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- EVENTS PAGE -->
+    <div id="events-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Events & Activities</h1>
+                    <p class="text-lg text-gray-600">
+                        From guest speakers and debates to voter registration drives and social events, there's always
+                        something
+                        happening at Politics Club.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold mb-4">Upcoming Events</h2>
+                    <p class="text-gray-600">Mark your calendar and join us for these exciting upcoming events.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-3">Guest Speaker: State Senator Maria Lopez</h3>
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
+                                    <span>📅 March 22, 2025</span>
+                                    <span>🕐 6:00 PM - 7:30 PM</span>
+                                    <span>📍 Auditorium Hall</span>
+                                    <span>👥 45 attending</span>
+                                </div>
+                                <p class="text-gray-600">
+                                    Join us for an evening with State Senator Lopez as she discusses her work on
+                                    education reform
+                                    and answers your questions about state politics.
+                                </p>
+                            </div>
+                            <button class="px-6 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">RSVP</button>
+                        </div>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-3">Debate: Universal Healthcare Policy</h3>
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
+                                    <span>📅 March 28, 2025</span>
+                                    <span>🕐 5:30 PM - 7:00 PM</span>
+                                    <span>📍 Room 204</span>
+                                    <span>👥 32 attending</span>
+                                </div>
+                                <p class="text-gray-600">
+                                    Our monthly debate series continues with a structured discussion on universal
+                                    healthcare.
+                                    All perspectives welcome.
+                                </p>
+                            </div>
+                            <button class="px-6 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">RSVP</button>
+                        </div>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-3">Voter Registration Drive</h3>
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
+                                    <span>📅 April 5, 2025</span>
+                                    <span>🕐 10:00 AM - 4:00 PM</span>
+                                    <span>📍 Student Center Plaza</span>
+                                    <span>👥 28 attending</span>
+                                </div>
+                                <p class="text-gray-600">
+                                    Help us register students to vote! Volunteers needed to staff tables and assist with
+                                    registration forms.
+                                </p>
+                            </div>
+                            <button class="px-6 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">RSVP</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weekly Meetings -->
+        <section class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto p-12 bg-primary text-white rounded-lg text-center">
+                    <div class="text-6xl mb-4">📅</div>
+                    <h2 class="text-3xl font-bold mb-4">Weekly Meetings</h2>
+                    <p class="text-lg mb-6 opacity-90">
+                        Join us every Thursday evening for our regular club meetings featuring discussions, planning
+                        sessions,
+                        and guest speakers.
+                    </p>
+                    <div class="space-y-2 opacity-90">
+                        <div>🕐 Every Thursday, 6:00 PM - 7:30 PM</div>
+                        <div>📍 Room 204, Student Center</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MEMBERS PAGE -->
+    <div id="members-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Our Members</h1>
+                    <p class="text-lg text-gray-600">
+                        Meet the dedicated students who lead our club and make our mission possible. Our diverse
+                        membership brings
+                        together students from all backgrounds and political perspectives.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Executive Board -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4">Executive Board</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Our leadership team is committed to fostering an inclusive and engaging environment for all
+                        members.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg text-center">
+                        <div
+                            class="w-24 h-24 mx-auto mb-4 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            SC
+                        </div>
+                        <h3 class="text-xl font-bold">Sarah Chen</h3>
+                        <div class="text-sm text-primary font-medium mb-4">President</div>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Senior majoring in Political Science. Passionate about environmental policy and youth voter
+                            engagement.
+                        </p>
+                        <button class="text-sm text-primary hover:underline">📧 Contact</button>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg text-center">
+                        <div
+                            class="w-24 h-24 mx-auto mb-4 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            MJ
+                        </div>
+                        <h3 class="text-xl font-bold">Marcus Johnson</h3>
+                        <div class="text-sm text-primary font-medium mb-4">Vice President</div>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Junior studying International Relations. Focuses on foreign policy and global governance
+                            issues.
+                        </p>
+                        <button class="text-sm text-primary hover:underline">📧 Contact</button>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg text-center">
+                        <div
+                            class="w-24 h-24 mx-auto mb-4 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            ER
+                        </div>
+                        <h3 class="text-xl font-bold">Emily Rodriguez</h3>
+                        <div class="text-sm text-primary font-medium mb-4">Secretary</div>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Sophomore in Economics. Interested in fiscal policy and economic justice.
+                        </p>
+                        <button class="text-sm text-primary hover:underline">📧 Contact</button>
+                    </div>
+
+                    <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg text-center">
+                        <div
+                            class="w-24 h-24 mx-auto mb-4 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            DK
+                        </div>
+                        <h3 class="text-xl font-bold">David Kim</h3>
+                        <div class="text-sm text-primary font-medium mb-4">Treasurer</div>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Junior studying Public Policy. Advocates for education reform and social equity.
+                        </p>
+                        <button class="text-sm text-primary hover:underline">📧 Contact</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join CTA -->
+        <section class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto p-12 bg-primary text-white rounded-lg text-center">
+                    <h2 class="text-3xl font-bold mb-4">Become a Member</h2>
+                    <p class="text-lg mb-8 opacity-90">
+                        We welcome students of all political backgrounds and experience levels. Join us to engage in
+                        meaningful
+                        dialogue and make a difference.
+                    </p>
+                    <div class="opacity-90">Meetings every Thursday at 6:00 PM in Room 204</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="contact-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
+                    <p class="text-lg text-gray-600">
+                        Have questions about joining the club? Want to suggest a speaker or event idea? We'd love to
+                        hear from you!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form & Info -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-2">
+                        <div class="p-6 bg-white border-2 border-gray-200 rounded-lg">
+                            <h2 class="text-2xl font-bold mb-2">Send Us a Message</h2>
+                            <p class="text-gray-600 mb-6">Fill out the form below and we'll get back to you as soon as
+                                possible.</p>
+
+                            <form id="contact-form" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="name" class="block text-sm font-medium mb-2">Name</label>
+                                        <input type="text" id="name" name="name" required
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div>
+                                        <label for="email" class="block text-sm font-medium mb-2">Email</label>
+                                        <input type="email" id="email" name="email" required
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="subject" class="block text-sm font-medium mb-2">Subject</label>
+                                    <input type="text" id="subject" name="subject" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                </div>
+
+                                <div>
+                                    <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                                    <textarea id="message" name="message" rows="6" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                                </div>
+
+                                <button type="submit"
+                                    class="px-6 py-3 bg-primary text-white rounded-md font-semibold hover:bg-opacity-90">
+                                    📧 Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-6">
+                        <div class="p-6 bg-white border-2 border-gray-200 rounded-lg">
+                            <div class="text-4xl mb-2">📧</div>
+                            <h3 class="text-xl font-bold mb-2">Email Us</h3>
+                            <a href="mailto:Abusheyh007@gmail.com" class="text-primary hover:underline">
+                                Abusheyh007@gmail.com
+                            </a>
+                        </div>
+
+                        <div class="p-6 bg-white border-2 border-gray-200 rounded-lg">
+                            <div class="text-4xl mb-2">🕐</div>
+                            <h3 class="text-xl font-bold mb-2">Meeting Times</h3>
+                            <p class="text-gray-600">
+                                Thursdays: 6:00 PM - 7:30 PM<br>
+                                Open to all students
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-primary text-white rounded-lg">
+                            <h3 class="font-semibold mb-2">Join Our Mailing List</h3>
+                            <p class="text-sm opacity-90 mb-4">
+                                Get updates about upcoming events, guest speakers, and club news.
+                            </p>
+                            <div class="flex gap-2">
+                                <input type="email" placeholder="Your email"
+                                    class="flex-1 px-4 py-2 rounded-md text-gray-900 focus:outline-none">
+                                <button
+                                    class="px-4 py-2 bg-white text-primary rounded-md font-semibold hover:bg-opacity-90">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+
+                    <div class="space-y-4">
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-lg font-bold mb-2">Do I need political experience to join?</h4>
+                            <p class="text-gray-600">
+                                Not at all! We welcome students of all experience levels, from complete beginners to
+                                political
+                                science majors. Our club is designed to help everyone learn and grow.
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-lg font-bold mb-2">Is the club affiliated with any political party?</h4>
+                            <p class="text-gray-600">
+                                No, we are a non-partisan organization. We welcome students from all political
+                                backgrounds and
+                                encourage respectful dialogue across different viewpoints.
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-lg font-bold mb-2">How do I become a member?</h4>
+                            <p class="text-gray-600">
+                                Simply show up to one of our Thursday meetings! There are no dues or formal application
+                                process.
+                                Come to a meeting, introduce yourself, and you're in.
+                            </p>
+                        </div>
+
+                        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                            <h4 class="text-lg font-bold mb-2">Can I suggest topics for debates or speakers?</h4>
+                            <p class="text-gray-600">
+                                We encourage all members to suggest topics, speakers, and event ideas. Contact us or
+                                bring your
+                                ideas to any meeting.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- BLOG PAGE -->
+    <div id="blog-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Club Blog</h1>
+                    <p class="text-lg text-gray-600">
+                        Read the latest articles, announcements, and insights from our club members.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Posts -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <div id="blog-posts" class="space-y-6">
+                    <!-- Blog posts will be loaded here dynamically -->
+                    <div class="text-center py-12">
+                        <p class="text-gray-600 mb-4">No blog posts yet. Check back soon!</p>
+                        <p class="text-sm text-gray-500">Your friend can add posts via the database.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 border-t">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-lg">Politics Club</h3>
+                    <p class="text-sm text-gray-600">
+                        Empowering students to engage in meaningful political discourse and civic action.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-sm">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" onclick="showPage('about')" class="text-gray-600 hover:text-primary">About
+                                Us</a></li>
+                        <li><a href="#" onclick="showPage('events')" class="text-gray-600 hover:text-primary">Events</a>
+                        </li>
+                        <li><a href="#" onclick="showPage('members')" class="text-gray-600 hover:text-primary">Our
+                                Team</a></li>
+                        <li><a href="#" onclick="showPage('contact')"
+                                class="text-gray-600 hover:text-primary">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-sm">Resources</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" onclick="showPage('blog')" class="text-gray-600 hover:text-primary">Blog</a>
+                        </li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Social -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-sm">Connect With Us</h3>
+                    <div class="space-y-2 text-sm">
+                        <a href="mailto:Abusheyh007@gmail.com"
+                            class="flex items-center gap-2 text-gray-600 hover:text-primary">
+                            📧 Abusheyh007@gmail.com
+                        </a>
+                    </div>
+                    <div class="flex gap-4 pt-2">
+                        <a href="#" class="text-gray-600 hover:text-primary text-2xl">📘</a>
+                        <a href="#" class="text-gray-600 hover:text-primary text-2xl">🐦</a>
+                        <a href="#" class="text-gray-600 hover:text-primary text-2xl">📷</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t text-center text-sm text-gray-600">
+                <p>&copy; 2025 Al Beuniy School Politics Club. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Page Navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageName + '-page').classList.add('active');
+
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageName) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Close mobile menu
+            document.getElementById('mobile-menu').classList.remove('open');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Update URL hash
+            window.location.hash = pageName;
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+
+        // Toast Notification
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (isError ? ' error' : '');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Contact Form Handler
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+
+            // Here your friend can add the actual API call to save to database
+            console.log('Form submitted:', formData);
+
+            // Show success message
+            showToast('Message sent successfully!');
+
+            // Reset form
+            this.reset();
+
+            // Example: Send to your friend's database API
+            // fetch('YOUR_API_ENDPOINT', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     showToast('Message sent successfully!');
+            //     this.reset();
+            // })
+            // .catch(error => {
+            //     showToast('Failed to send message. Please try again.', true);
+            // });
+        });
+
+        // Load blog posts from database (if available)
+        async function loadBlogPosts() {
+            try {
+                // Your friend can replace this with their actual API endpoint
+                // const response = await fetch('YOUR_API_ENDPOINT/posts');
+                // const posts = await response.json();
+
+                // For now, show placeholder
+                const blogContainer = document.getElementById('blog-posts');
+
+                // Example of how to render posts:
+                // if (posts && posts.length > 0) {
+                //     blogContainer.innerHTML = posts.map(post => `
+                //         <div class="card-hover p-6 bg-white border-2 border-gray-200 rounded-lg">
+                //             <div class="flex items-start justify-between mb-4">
+                //                 <div>
+                //                     <h3 class="text-2xl font-bold mb-2">${post.title}</h3>
+                //                     <p class="text-sm text-gray-600">
+                //                         By ${post.author} • ${new Date(post.created_at).toLocaleDateString()} • ${post.type}
+                //                     </p>
+                //                 </div>
+                //                 ${post.published ? '<span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Published</span>' : ''}
+                //             </div>
+                //             <p class="text-gray-600">${post.content.substring(0, 200)}...</p>
+                //         </div>
+                //     `).join('');
+                // }
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+            }
+        }
+
+        // Handle URL hash on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash + '-page')) {
+                showPage(hash);
+            } else {
+                showPage('home');
+            }
+
+            // Load blog posts
+            loadBlogPosts();
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash + '-page')) {
+                showPage(hash);
+            }
+        });
+    </script>
+</body>
+
+</html>
